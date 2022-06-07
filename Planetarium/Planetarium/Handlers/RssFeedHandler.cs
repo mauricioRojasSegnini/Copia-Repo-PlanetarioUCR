@@ -25,7 +25,8 @@ namespace Planetarium.Handlers {
             {"Sep", 9},
             {"Oct", 10},
             {"Nov", 11},
-            {"Dec", 12}
+            {"Dec", 12},
+            {"December", 12}
         };
 
         static Dictionary<int, string> DAYS = new Dictionary<int, string> {
@@ -83,18 +84,20 @@ namespace Planetarium.Handlers {
 
         private void AddEvent(List<EventModel> events, string innerText, HtmlNode node) {
             string date = FormatDate(innerText.Split(':')[0]);
-            string title = innerText.Split(':')[1];
-            string description = node.ChildNodes[2].InnerText;
-            string link = "https://www.timeanddate.com/" + node.ChildNodes[0].ChildNodes[1].GetAttributeValue("href", string.Empty);
-            if (!date.Contains("-")) {
-                events.Add(new EventModel {
-                    Title = title,
-                    Description = description,
-                    Date = date.Replace("/", "-"),
-                    Link = link,
-                    ImgURL = "",
-                    Color = "#13967d"
-                });
+            if (date.Contains(" ")) { 
+                string title = innerText.Split(':')[1];
+                string description = node.ChildNodes[2].InnerText;
+                string link = "https://www.timeanddate.com/" + node.ChildNodes[0].ChildNodes[1].GetAttributeValue("href", string.Empty);
+                if (!date.Contains("-")) {
+                    events.Add(new EventModel {
+                        Title = title,
+                        Description = description,
+                        Date = date.Replace("/", "-"),
+                        Link = link,
+                        ImgURL = "",
+                        Color = "#13967d"
+                    });
+                }
             }
         }
 
@@ -103,7 +106,10 @@ namespace Planetarium.Handlers {
             int currentMonth = Convert.ToInt32(DateTime.Now.ToString("MM"));
             int currentYear = Convert.ToInt32(DateTime.Now.Year.ToString());
             int month = MONTH[date.Split(' ')[0]];
-            string day = date.Split(' ')[1];
+            string day = "1";
+            if (date.Contains(" ")) { 
+                day = date.Split(' ')[1];
+            }
             int dayToInt;
 
             if (day.Contains('/')) {
