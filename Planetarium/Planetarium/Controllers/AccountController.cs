@@ -7,6 +7,7 @@ using Planetarium.Handlers;
 namespace Planetarium.Controllers
 {
     public class AccountController : Controller{
+    
         public AuthHandler AuthDataAccess { get; set; }
         public AuthorizationController AuthController { get; set; }
 
